@@ -2,17 +2,101 @@
     color: red;
 }
 #p2 {
-    color: #FAF200;
+    color: #f5db25;
 }
 #game_title {
     text-align: center;
-    position: relative;
-    text-shadow: 1px 0.01px 10px;
+    position: abs;
+    text-shadow: 1px 0.01px 30px;
+    font-family: "Exo 2";
 }
 #info-panel {
     top: 80px;
 }
-#credits #author{
+.credits #author{
     font-family: "courier new";
     font-style: italic;
+}
+#dev-tools {
+    opacity: 0.2;
+}
+#board-guide {
+    margin-left: 200px;
+    position: absolute;
+    border-color: #ffff;
+}
+#game-canvas {
+    position: absolute;
+    margin-top: -600px;
+    z-index: 1;
+}
+
+.columncontainer {
+    display: inline-block;
+    position: relative;
+}
+
+.column {
+    border: 2px #724EB1;
+    border-style: solid;
+    display: block;
+    position: relative;
+    margin-top: 20px;
+    height: 600px;
+    width: 100px;
+}
+
+.column#first {
+    margin-left: 200px;
+}
+
+.buttoncontainer#first{
+    margin-left: 200px;
+}
+
+.buttoncontainer {
+    margin-top: 10px;
+    padding-left: 25px;
+    position: relative;
+}
+
+.gamebutton {
+    background-color: #EDEDED;
+    width: 50px;
+    height: 20px;
+}
+
+.win.icon#p1 {
+    margin-left: 100px;
+    display: none;
+}
+
+.win.icon#p2{
+    margin-left: 85px;
+    display: none;
+}
+
+.current-play#p1 {
+    margin-left: 100px;
+    display: none;
+}
+.current-play#p2 {
+    margin-left: 85px;
+    display: none;
+}
+
+.chip {
+    height: 80px;
+    width: 80px;
+    border-radius: 100%;
+    margin: auto;
+    position: absolute;
+    left:10px;
+    top: 40px;
+}
+.player1 {
+    background-color: red;
+}
+.player2 {
+    background-color: yellow;
 }
