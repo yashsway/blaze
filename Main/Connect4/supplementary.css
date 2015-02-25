@@ -13,6 +13,9 @@
 #info-panel {
     top: 80px;
 }
+.console {
+    top: 20px;
+}
 .credits #author{
     font-family: "courier new";
     font-style: italic;
@@ -34,6 +37,7 @@
 .columncontainer {
     display: inline-block;
     position: relative;
+    z-index: 2;
 }
 
 .column {
@@ -92,11 +96,22 @@
     margin: auto;
     position: absolute;
     left:10px;
-    top: 40px;
+    top: 10px;
 }
 .player1 {
     background-color: red;
 }
 .player2 {
     background-color: yellow;
+}
+.info {
+    display: none;
+}
+#player1Win {
+    background-color: #e74c3c;
+    color: #ffffff;
+}
+#player2Win {
+    background-color: #f5db25;
+    color: #000000;
 }

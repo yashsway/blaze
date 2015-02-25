@@ -1,12 +1,10 @@
 //Declare all necessary variables & arrays
 var columns = [[], [], [], [], [], [], []];
-var inPlay = true;
-var start = false;
+var launch = false;
 var reset = false;
 var redChips = 21;
 var yellowChips = 21; //42 in total. (7x6 grid)
 var currentPlayer = 0;
-var launch = false;
 
 //Calculates how far to drop
 var dropLength = function(index) {
@@ -43,32 +41,39 @@ var checkForDraw = function() {
     //Traverse through all the 7 columns
     for(var i = 0; i < columns.length; i++)
         //And check if all the columns are NOT full
-        if(columns[i].length < maxHeight)
+        if(columns[i].length < 6)
             return;
     //If they are full...
-    $(".displaycontainer h2").text("Draw!");
+    //$(".displaycontainer h2").text("Draw!");
     //Display win assets.
-    $(".win").show();
+    //$(".win").show();
+    window.alert("DRAW");
     //Stop game
-    inPlay = false;
+    launch = false;
 };
 
+//Function used by winner() to locate the next chip (in any of the 8 directions)
 var locate = function(type, x, y) {
+    //The following 3 if statements are safeguards to prevent checking outside the gameboard/prevent unecessary execution of the winner function
     if((x < 0) || (x > 6)) return false;
-    if((y < 0) || (y > maxHeight - 1)) return false;
+    if((y < 0) || (y > 6 - 1)) return false;
+    //window.alert(columns[x].length + " "+(y + 1));
     if(columns[x].length < (y + 1)) return false;
     return (columns[x][y] === type);
 };
 
-var winner = function() {
+function winner(type,x,y) {
+    //window.alert(!locate(type, x, y));
     if(!locate(type, x, y)) return false;
     var direct = [[1,0], [1,1], [0,1], [1,-1]];
     var matches = 0;
     for(var i = 0; i < 4; i++) {
+        //Positive side check
         for(var j = 1; ; j++)
             if(locate(type, x+j*direct[i][0], y+j*direct[i][1]))
                 matches++;
             else break;
+        //Negative side check
         for(var j = 1; ; j++)
             if(locate(type, x-j*direct[i][0], y-j*direct[i][1]))
                 matches++;
@@ -81,10 +86,11 @@ var winner = function() {
 
 //Updates the game after every chip play
 var updateGame = function(index) {
-    //If not playing at this moment, don't do anything in this function
-    if(!inPlay) return false;
+    //If NOT playing at this moment, don't do anything in this function
+    //if(!inPlay) return false;
     //Calculate how many empty spaces are available in this column
     var colLength = columns[index].length;
+    //window.alert(colLength);
     //If the column is full of chips...
     if(colLength >= 6) return false;
     //Else...Push the chip type into the respective column array (0=red, 1=yellow)
@@ -92,21 +98,29 @@ var updateGame = function(index) {
     columns[index].push(type);
     //and increment the current player
     currentPlayer++;
-    var type = currentPlayer % 2;
-    /*if(winner(currentPlayer, index, colLength)) {
+    if(winner(type, index, colLength)) {
         //If the winner function returned true, one of the players has won. Display the win assets.
-        $(".win").show();
+        if(type==0){
+            messageConsole("#player1Win");
+            $(".win.icon#p1").show();
+            $(".current-play#p1").hide();
+        }else if(type==1){
+            messageConsole("#player2Win");
+            $(".win.icon#p2").show();
+            $(".current-play#p2").hide();
+        }
         //Game not in play anymore.
-        inPlay = false;
+        launch = false;
     }
     //If the game is still going on and the current column is full of chips...
-    if(inPlay && columns[index].length === maxHeight)
-        checkForDraw();*/
+    if(launch && columns[index].length === 6)
+        checkForDraw();
     return true;
 };
 
 //Updates the current player arrow icons based on player turn
 var updateCurrentPlayer = function() {
+    //p contains the next player
     var p = currentPlayer%2 ? "player2" : "player1";
     if(p=="player1"){
         $(".current-play#p1").show();
@@ -115,17 +129,25 @@ var updateCurrentPlayer = function() {
         $(".current-play#p2").show();
         $(".current-play#p1").hide();
     }
-    //When the reset button is pressed, set player 1 as the default
-    if(reset==true){
-        reset = false;
-        currentPlayer = 0;
-        $(".current-play#p1").show();
-        $(".current-play#p2").hide();
-    }
 };
+
+//Hides all pointer/win assets
+function hidePointers(){
+    //Hide the current player indicators
+    $(".current-play#p1").hide();
+    $(".current-play#p2").hide();
+    //Hide the win assets
+    $(".win").hide();
+}
+
+function messageConsole(selector){
+    $(selector).show();
+    $(selector).delay(5000).slideUp("slow");
+}
 
 //Run this function on page load
 $(document).ready(function init(){
+    messageConsole("#welcome");
     //Stage instance (GLOBAL)
     stage = new createjs.Stage("game-canvas");
     //Make the game board
@@ -133,40 +155,46 @@ $(document).ready(function init(){
     //FOLLOWING EVENT IS A TEST EVENT
     $("#info-panel #game-tools-panel #launch").click(function() {
         updateCurrentPlayer();
+        $("#launch").prop('disabled',true);
         launch = true;
+        $("#inProgress").show();
+        messageConsole("#inProgress");
     });
-    $(".columncontainer .buttoncontainer .gamebutton").click(function() {
+    $(".columncontainer").click(function() {
         //If game hasn't been launched yet
         if(launch==false) return;
-        //ANY WINDOW.ALERT's in the following code are TEST LINES
-        //window.alert("LOL");
-        var index = $(this).parents(".columncontainer").index();
-        //window.alert(index);
+        var index = $(this).index();
+        //Update the game (Also the point where game doesn't execute when not in play)
         if(!updateGame(index)) return;
-        start = true;
+        //set p to be the current player's ID (0=red,1=yellow)
         var p = currentPlayer%2 ? "player1":"player2";
+        //Make a new chip object
         var newChip = "<div class=\"chip " + p + "\"></div>";
-        $(this).closest(".columncontainer").prepend(newChip);
-        var t = $(this).closest(".columncontainer").children(".chip:first-child").position().top;
-        $(this).closest(".columncontainer").children(".chip:first-child").css("top", t);
-        $(this).closest(".columncontainer").children(".chip:first-child").animate({top:"+="+dropLength(index)+"px",opacity:'0.5'},400);
+        //Add the chip to the current columncontainer
+        $(this).prepend(newChip);
+        var t = $(this).children(".chip:first-child").position().top;
+        $(this).children(".chip:first-child").css("top", t);
+        $(this).children(".chip:first-child").animate({top:"+="+dropLength(index)+"px",opacity:'0.5'},400);
         //If game has ended.... don't call updateDisplayChip()
-        if(!inPlay) return;
+        if(!launch) return;
+        //Update the current player pointers
         updateCurrentPlayer();
     });
     //Now we program the reset button
     $("#reset").click(function() {
+        //Fade out all the chips
         $(".chip").fadeOut(function() {
             $(this).remove();
         });
         //Reset the array
         for(var i = 0; i < columns.length; i++) columns[i] = [];
-        //Hide the win assets
-        $(".win").hide();
-        inPlay = true;
-        start = false;
-        reset = true;
+        //Game has been reset. Set the default player back to red.
+        currentPlayer = 0;
+        //Set the launch key back to false
         launch = false;
-        updateCurrentPlayer();
+        //Enable the start button
+        $("#launch").prop('disabled',false);
+        //Hide all indicators
+        hidePointers();
     });
 });

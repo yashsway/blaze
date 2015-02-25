@@ -28,7 +28,7 @@
 
     <!--Sidebar-->
     <div class="col-md-2" id="info-panel">
-       <div class=".chip"></div>
+        <div class=".chip"></div>
         <h1 id=game_title>Connect 4</h1>
         <!--Grey player list-->
         <div class="panel panel-default" id="player-panel">
@@ -71,7 +71,7 @@
         </div>
     </div>
     <!--Actual game area-->
-    <div class="col-md-10" id="game-panel">
+    <div class="col-md-7" id="game-panel">
         <!--<div id="board-guide">
             <img src="board-coin-guides.png" />
         </div>-->
@@ -79,45 +79,45 @@
             <tr>
                 <td>
                     <div class="columncontainer">
-                        <div class="buttoncontainer">
+                        <!--<div class="buttoncontainer">
                             <button type="button" class="btn btn btn-default gamebutton"></button>
-                        </div>
+                        </div>-->
                         <div class="column"></div>
                     </div>
                     <div class="columncontainer">
-                        <div class="buttoncontainer">
+                        <!--<div class="buttoncontainer">
                             <button type="button" class="btn btn btn-default gamebutton"></button>
-                        </div>
+                        </div>-->
                         <div class="column"></div>
                     </div>
                     <div class="columncontainer">
-                        <div class="buttoncontainer">
+                        <!--<div class="buttoncontainer">
                             <button type="button" class="btn btn btn-default gamebutton"></button>
-                        </div>
+                        </div>-->
                         <div class="column"></div>
                     </div>
                     <div class="columncontainer">
-                        <div class="buttoncontainer">
+                        <!--<div class="buttoncontainer">
                             <button type="button" class="btn btn btn-default gamebutton"></button>
-                        </div>
+                        </div>-->
                         <div class="column"></div>
                     </div>
                     <div class="columncontainer">
-                        <div class="buttoncontainer">
+                        <!--<div class="buttoncontainer">
                             <button type="button" class="btn btn btn-default gamebutton"></button>
-                        </div>
+                        </div>-->
                         <div class="column"></div>
                     </div>
                     <div class="columncontainer">
-                        <div class="buttoncontainer">
+                        <!--<div class="buttoncontainer">
                             <button type="button" class="btn btn btn-default gamebutton"></button>
-                        </div>
+                        </div>-->
                         <div class="column"></div>
                     </div>
                     <div class="columncontainer">
-                        <div class="buttoncontainer">
+                        <!--<div class="buttoncontainer">
                             <button type="button" class="btn btn btn-default gamebutton"></button>
-                        </div>
+                        </div>-->
                         <div class="column"></div>
                     </div>
                 </td>
@@ -126,21 +126,21 @@
         </table>
         <canvas id="game-canvas" width="1000" height="1000"></canvas>
     </div>
-    <!--<script>
-        button = document.getElementById("launch");
-        var count = 2;
-        button.addEventListener("mouseover", change);
-        button.addEventListener("mouseout", change);
-        function change(){
-            if(count%2==0){
-                button.style.backgroundColor = "white";
-                count++;
-            }else if(count%2!=0){
-                button.style.backgroundColor.r
-                count++;
-            }
-        }
-    </script>-->
+    <!--Side Custom Console-->
+    <div class="col-md-3 console">
+        <div class="alert alert-info info" role="alert" id="welcome">
+            <strong>Hey there!</strong> Press Start to begin playing!
+        </div>
+        <div class="alert alert-warning info" role="alert" id="inProgress">
+            Game in progress. Press reset at any time!
+        </div>
+        <div class="alert alert-success info" role="alert" id="player1Win">
+            Red Wins!
+        </div>
+        <div class="alert alert-success info" role="alert" id="player2Win">
+            Yellow Wins!
+        </div>
+    </div>
 </body>
 
 </html>
