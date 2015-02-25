@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <title>Connect 4 - Developer Mode</title>
+    <!--browser and device optimization-->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Bootstrap link (go back two folders)-->
+    <link href="../../Frameworks/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!--Supplementary stylesheet-->
+    <link href="supplementary.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../../Frameworks/bootstrap/js/bootstrap.min.js"></script>
+    <!--CreateJS-->
+    <script src="https://code.createjs.com/createjs-2014.12.12.min.js"></script>
+    <script>
+        window.onload = function init() {
+            //Stage instance (GLOBAL)
+            stage = new createjs.Stage("game-canvas");
+            /*var line = new createjs.Shape();
+            line.graphics.beginStroke("red");
+            line.graphics.moveTo(100,100).lineTo(200,200);
+            stage.addChild(line);
+            stage.update();*/
+            boardMaker();
+        }
+
+        //Makes the grid of the Connect 4 game (6 x 7 grid)
+        function boardMaker() {
+            var mod = 0;
+            //Horizontal Lines
+            for (i = 0; i < 7; i++) {
+                var line = new createjs.Shape();
+                line.graphics.beginStroke("red");
+                line.graphics.moveTo(200, 100+mod).lineTo(900, 100+mod); //moveTo(x,y) -> lineTo(x,y)
+                stage.addChild(line);
+                mod = mod + 100;
+            }
+            mod = 0;
+            //Vertical Lines
+            for (i = 0; i < 8; i++) {
+                var line = new createjs.Shape();
+                line.graphics.beginStroke("red");
+                line.graphics.moveTo(200+mod, 100).lineTo(200+mod, 700); //moveTo(x,y) -> lineTo(x,y)
+                stage.addChild(line);
+                mod = mod + 100;
+            }
+            stage.update();
+        }
+    </script>
+
+    <!--Sidebar-->
+    <div class="col-md-2" id="info-panel">
+        <h1 id=game_title>Connect 4</h1>
+        <!--Grey player list-->
+        <div class="panel panel-default" id="player-panel">
+            <div class="panel-heading">
+                <h5>Players</h5>
+            </div>
+            <div class="panel-body">
+                <p id=p1>Red</p>
+                <p id=p2>Yellow</p>
+            </div>
+        </div>
+        <!--Game mode-->
+        <div class="panel panel-warning" id="mode-panel">
+            <div class="panel-heading">
+                <h5>Mode</h5>
+            </div>
+            <div class="panel-body">
+
+            </div>
+        </div>
+        <!--Green game tools panel-->
+        <div class="panel panel-success" id="game-tools-panel">
+            <div class="panel-heading">
+                <h5>Game</h5>
+            </div>
+            <div class="panel-body">
+                <button type="button" class="btn btn-lg btn-success">Start</button>
+                <button type="button" class="btn btn btn-default">Reset</button>
+            </div>
+        </div>
+        <div id ="credits">
+        <p id="author">&#169 Made with &#9829 by A Cup Of Java.</p>
+        </div>
+    </div>
+    <!--Actual game area-->
+    <div class="col-md-10" id="game">
+        <canvas id="game-canvas" width="1000" height="1000"></canvas>
+    </div>
+</body>
+
+</html>

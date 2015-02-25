@@ -1,0 +1,18 @@
+#p1 {
+    color: red;
+}
+#p2 {
+    color: #FAF200;
+}
+#game_title {
+    text-align: center;
+    position: relative;
+    text-shadow: 1px 0.01px 10px;
+}
+#info-panel {
+    top: 80px;
+}
+#credits #author{
+    font-family: "courier new";
+    font-style: italic;
+}
