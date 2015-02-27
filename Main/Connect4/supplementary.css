@@ -45,7 +45,7 @@
     position: absolute;
     margin-top: -605px;
     margin-left: 90px;
-    z-index: -2;
+    z-index: -3;
 }
 /*columns of game board*/
 .columncontainer {
