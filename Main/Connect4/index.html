@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Connect 4 - Developer Mode</title>
+    <title>Connect 4</title>
     <!--browser and device optimization-->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,9 +11,8 @@
     <link href="../../Frameworks/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!--Supplementary stylesheet-->
     <link href="supplementary.css" rel="stylesheet">
-    <!-Web Fonts-->
+    <!--Web Fonts-->
     <link href='http://fonts.googleapis.com/css?family=Exo+2:400,800' rel='stylesheet' type='text/css'>
-
 </head>
 
 <body>
@@ -25,10 +24,27 @@
     <script src="https://code.createjs.com/createjs-2014.12.12.min.js"></script>
     <!--Run the script for the game functions-->
     <script src="script.js"></script>
-
     <!--Sidebar-->
     <div class="col-md-2" id="info-panel">
         <div class=".chip"></div>
+        <div class="alert alert-info info" role="alert" id="welcome">
+            <strong>Hey there!</strong> Press Start to begin playing!
+        </div>
+        <div class="alert alert-warning info" role="alert" id="inProgress">
+            Game in progress. Press reset to stop at any time!
+        </div>
+        <div class="alert alert-success info" role="alert" id="player1Win">
+            Blue Wins!
+        </div>
+        <div class="alert alert-success info" role="alert" id="player2Win">
+            Red Wins!
+        </div>
+        <div class="alert alert-danger info" role="alert" id="resetMsg">
+            Game Reset!
+        </div>
+        <div class="alert alert-info info" role="alert" id="draw">
+            It's a Draw!
+        </div>
         <h1 id=game_title>Connect 4</h1>
         <!--Grey player list-->
         <div class="panel panel-default" id="player-panel">
@@ -36,13 +52,13 @@
                 <h5>Players</h5>
             </div>
             <div class="panel-body">
-                <p id=p1>Red
-                    <img src="red-play.png" title="Crown" width="32" class="current-play" id=p1>
-                    <img src="crown-red.png" title="Crown" width="32" class="icon win" id=p1>
+                <p class=p1>Bubblegum
+                    <img src="blue-play.png" title="Crown" width="32" class="player-icons play" id=p1>
+                    <img src="crown-blue.png" title="Crown" width="32" class="player-icons win" id=p1>
                 </p>
-                <p id=p2>Yellow
-                    <img src="yellow-play.png" title="Crown" width="32" class="current-play" id=p2>
-                    <img src="crown-yellow.png" title="Crown" width="32" class="icon win" id=p2>
+                <p class=p2>Salmon
+                    <img src="red-play.png" title="Crown" width="32" class="player-icons play" id=p2>
+                    <img src="crown-red.png" title="Crown" width="32" class="player-icons win" id=p2>
                 </p>
             </div>
         </div>
@@ -50,10 +66,12 @@
         <div class="panel panel-warning" id="mode-panel">
             <div class="panel-heading">
                 <h5>Mode</h5>
+                <img src="play-mode.png" title="Play" width="32" class="mode-icon" id="play-mode-icon">
+                <img src="dev-mode.png" title="Play" width="32" class="mode-icon" id="dev-mode-icon">
             </div>
             <div class="panel-body">
-                <button type="button" class="btn btn btn-warning">Play</button>
-                <button type="button" class="btn btn btn-danger" id="dev-tools">Developer</button>
+                <button type="button" class="btn btn btn-warning" id="play-mode" disabled>Play</button>
+                <button type="button" class="btn btn btn-danger" id="dev-mode">Developer</button>
             </div>
         </div>
         <!--Green game tools panel-->
@@ -71,14 +89,15 @@
         </div>
     </div>
     <!--Actual game area-->
-    <div class="col-md-7" id="game-panel">
+    <div class="col-lg-10" id="game-panel">
         <!--<div id="board-guide">
             <img src="board-coin-guides.png" />
         </div>-->
         <table>
             <tr>
                 <td>
-                    <div class="columncontainer">
+                   <div class="playerCircle p1 dev-mode"></div>
+                    <div class="columncontainer" id="first">
                         <!--<div class="buttoncontainer">
                             <button type="button" class="btn btn btn-default gamebutton"></button>
                         </div>-->
@@ -120,26 +139,11 @@
                         </div>-->
                         <div class="column"></div>
                     </div>
+                    <div class="playerCircle p2 dev-mode"></div>
                 </td>
             </tr>
-
         </table>
-        <canvas id="game-canvas" width="1000" height="1000"></canvas>
-    </div>
-    <!--Side Custom Console-->
-    <div class="col-md-3 console">
-        <div class="alert alert-info info" role="alert" id="welcome">
-            <strong>Hey there!</strong> Press Start to begin playing!
-        </div>
-        <div class="alert alert-warning info" role="alert" id="inProgress">
-            Game in progress. Press reset at any time!
-        </div>
-        <div class="alert alert-success info" role="alert" id="player1Win">
-            Red Wins!
-        </div>
-        <div class="alert alert-success info" role="alert" id="player2Win">
-            Yellow Wins!
-        </div>
+        <canvas id="game-canvas" width="724" height="600"></canvas>
     </div>
 </body>
 

@@ -1,45 +1,60 @@
-#p1 {
-    color: red;
+/*for any player-specific text*/
+.p1 {
+    color: #3498db;
 }
-#p2 {
-    color: #f5db25;
+.p2 {
+    color: #e74c3c;
 }
+/*colors for chips*/
+.player1 {
+    background-color: #3498db;
+}
+.player2 {
+    background-color: #e74c3c;
+}
+/*main game title*/
 #game_title {
     text-align: center;
-    position: abs;
+    position: relative;
     text-shadow: 1px 0.01px 30px;
     font-family: "Exo 2";
 }
+/*left sidebar*/
 #info-panel {
-    top: 80px;
-}
-.console {
     top: 20px;
 }
+/*credits section, author sub-text*/
 .credits #author{
     font-family: "courier new";
     font-style: italic;
 }
-#dev-tools {
-    opacity: 0.2;
+/*for all developer mode objects*/
+.dev-mode {
+    display: none;
+}
+/*spacing for developer mode button*/
+#dev-mode {
+    margin-top: 2px;
 }
 #board-guide {
     margin-left: 200px;
     position: absolute;
-    border-color: #ffff;
+    border-color: #ffffff;
 }
 #game-canvas {
     position: absolute;
-    margin-top: -600px;
-    z-index: 1;
+    margin-top: -605px;
+    margin-left: 90px;
+    z-index: -2;
 }
-
+/*columns of game board*/
 .columncontainer {
     display: inline-block;
     position: relative;
     z-index: 2;
+    cursor: hand;
 }
-
+/*Inner columns*/
 .column {
     border: 2px #724EB1;
     border-style: solid;
@@ -49,9 +64,9 @@
     height: 600px;
     width: 100px;
 }
-
-.column#first {
-    margin-left: 200px;
+/*for first column offset*/
+#first {
+    margin-left: 90px;
 }
 
 .buttoncontainer#first{
@@ -63,32 +78,51 @@
     padding-left: 25px;
     position: relative;
 }
-
 .gamebutton {
     background-color: #EDEDED;
     width: 50px;
     height: 20px;
 }
 
-.win.icon#p1 {
-    margin-left: 100px;
+/*icons to indicate winner*/
+.player-icons#p1{
+    margin-left: 47px;
+}
+.player-icons#p2{
+    margin-left: 70px;
+}
+/*win icons*/
+.player-icons.win#p1 {
     display: none;
 }
-
-.win.icon#p2{
-    margin-left: 85px;
+.player-icons.win#p2 {
     display: none;
 }
-
-.current-play#p1 {
-    margin-left: 100px;
+/*pointer icons to indicate current player*/
+.player-icons.play#p1 {
     display: none;
 }
-.current-play#p2 {
-    margin-left: 85px;
+.current-play.play#p2 {
     display: none;
 }
-
+/*mode icon stuff*/
+.mode-icon#dev-mode-icon{
+    display: none;
+}
+.mode-icon#play-mode-icon {
+    margin: auto;
+    margin-left: 50px;
+    margin-top: -60px;
+}
+.mode-icon#dev-mode-icon {
+    margin: auto;
+    margin-left: 50px;
+    margin-top: -60px;
+}
+#mode-panel > .panel-heading {
+    height: 50px;
+}
+/*properties for each token (80x80px)*/
 .chip {
     height: 80px;
     width: 80px;
@@ -98,20 +132,58 @@
     left:10px;
     top: 10px;
 }
-.player1 {
-    background-color: red;
-}
-.player2 {
-    background-color: yellow;
-}
+/*hide alerts by default*/
 .info {
     display: none;
 }
+/*player1Win alert modifier*/
 #player1Win {
+    background-color: #3498db;
+    color: #ffffff;
+}
+/*player2Win alert modifier*/
+#player2Win {
     background-color: #e74c3c;
     color: #ffffff;
 }
-#player2Win {
-    background-color: #f5db25;
-    color: #000000;
+/*spacing for reset button*/
+#reset {
+    margin-top: 2px;
+}
+/*reduce opacity of play mode button by default*/
+#play-mode {
+    opacity: 0.25;
+}
+
+#draw {
+    background-color: #EDEDED;
+    border-color: #724EB1;
+}
+/*player chip selection objects*/
+.playerCircle {
+    cursor: pointer;
+}
+.playerCircle.p1 {
+    height: 80px;
+    width: 80px;
+    border-radius: 100%;
+    margin: inherit;
+    position: absolute;
+    left:10px;
+    top: 10px;
+    background-color: #3498db;
+    opacity: 0.5;
+    margin-top: 40px;
+}
+.playerCircle.p2 {
+    height: 80px;
+    width: 80px;
+    border-radius: 100%;
+    position: absolute;
+    left:10px;
+    top: 10px;
+    background-color: #e74c3c;
+    opacity: 0.5;
+    top: 50px;
+    left: 845px;
 }
