@@ -1,13 +1,19 @@
 //Declare all necessary variables & arrays
+//"columns" is a 2-dimensional array that is used to represent the game boards as in where each chip has been placed into which cell.
 var columns = [[], [], [], [], [], [], []];
+//“launch” is a boolean value that represents whether the game is engaged or not.  When the start button is clicked by the mouse, the “launch” value changes to reflect if the game is in progress.  When a game is completed, the “launch” value changes again to reflect that the game is not in progress.
 var launch = false;
+//“reset” is a boolean value that represents when the reset button has been clicked.
 var reset = false;
+//“redChips” and “blueChips” each represent the total possible number of red and blue chips that can be placed on a board legally...42 in total. (7x6 grid)
 var redChips = 21;
-var blueChips = 21; //42 in total. (7x6 grid)
+var blueChips = 21;
+//“currentPlayer” represents intially which player starts the game off by way of being randomly selected by the program.  Throughout the code, it takes the form of whichever player’s turn it is, based on alternating turn-based operations.  
 var currentPlayer = Math.round((Math.random()));
+//"play" represents that the player mode has been enabled
 var mode = "play";
 
-//Calculates how far to drop
+//calculates how far a chip will drop when a certain column has been clicked based on the number of chips already placed in that column. 
 var dropLength = function(index) {
     //6 Chips + some buffer space - length of the column (# of chips in the argument column).. all * 100. (Each chip is 100x100px)
     return ((6 + 0.20) - columns[index].length) * 100;
@@ -19,7 +25,7 @@ function hidePlayerPointers(){
     $(".player-icons.play#p2").hide();
 };
 
-//Display the message specified in the argument. Also run an exit animation on it after 5s.
+//Display the message specified in the argument in the sidebar. Also run an exit animation on it after 5s.
 function messageConsole(selector){
     $(selector).show();
     $(selector).delay(5000).slideUp("slow");
@@ -120,6 +126,7 @@ $(document).ready(function(){
 });
 
 //Main Function
+//creates the display for the game to take place, prints messages to the screen for the user, prints the initial graphics of the game, and implements the click event listener and action.
 $(document).ready(function init(){
     //Hide player pointers
     hidePlayerPointers();
@@ -232,6 +239,7 @@ $(document).ready(function reset(){
     });
 });
 
+//displays horizontal lines onto the columns to form cells
 function horizontalLineMaker() {
     var mod = 0;
     //Horizontal Lines (width: 700px)

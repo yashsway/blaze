@@ -24,39 +24,46 @@
     <script src="https://code.createjs.com/createjs-2014.12.12.min.js"></script>
     <!--Run the script for the game functions-->
     <script src="script.js"></script>
-    <!--Sidebar-->
+    <!--Sidebar dimensions and alerts-->
     <div class="col-md-2" id="info-panel">
         <div class=".chip"></div>
+        <!--At beginning of application, alert user with how to play-->
         <div class="alert alert-info info" role="alert" id="welcome">
             <strong>Hey there!</strong> Press Start to begin playing!
         </div>
+        <!--after "start" button is clicked, alert user how to
+        reset the application-->
         <div class="alert alert-warning info" role="alert" id="inProgress">
             Game in progress. Press reset to stop at any time!
         </div>
+        <!--At the end of game progress, alert user to the end status of            the game (blue/red chip wins, draw-->
         <div class="alert alert-success info" role="alert" id="player1Win">
             Blue Wins!
         </div>
         <div class="alert alert-success info" role="alert" id="player2Win">
             Red Wins!
         </div>
-        <div class="alert alert-danger info" role="alert" id="resetMsg">
-            Game Reset!
-        </div>
         <div class="alert alert-info info" role="alert" id="draw">
             It's a Draw!
         </div>
+        <!--Alert user to when the "reset" button has been clicked-->
+        <div class="alert alert-danger info" role="alert" id="resetMsg">
+            Game Reset!
+        </div>
         <h1 id=game_title>Connect 4</h1>
-        <!--Grey player list-->
+        <!--Grey player box-->
         <div class="panel panel-default" id="player-panel">
             <div class="panel-heading">
                 <h5>Players</h5>
             </div>
+            <!--Displays the player names and their respective colours-->
             <div class="panel-body">
-                <p class=p1>Bubblegum
+                <p class=p1>Player 1
+                <!--Displays the current player with an arrow and the game winner, if any, with a crown.  Each of these icons are displayed with their respective player colours -->
                     <img src="blue-play.png" title="Crown" width="32" class="player-icons play" id=p1>
                     <img src="crown-blue.png" title="Crown" width="32" class="player-icons win" id=p1>
                 </p>
-                <p class=p2>Salmon
+                <p class=p2>Player 2
                     <img src="red-play.png" title="Crown" width="32" class="player-icons play" id=p2>
                     <img src="crown-red.png" title="Crown" width="32" class="player-icons win" id=p2>
                 </p>
@@ -66,9 +73,11 @@
         <div class="panel panel-warning" id="mode-panel">
             <div class="panel-heading">
                 <h5>Mode</h5>
+                <!--displays the icon that represents which game mode button has been selected, in the "mode" bar-->
                 <img src="play-mode.png" title="Play" width="32" class="mode-icon" id="play-mode-icon">
                 <img src="dev-mode.png" title="Play" width="32" class="mode-icon" id="dev-mode-icon">
             </div>
+            <!--this section under the "mode" bar contains the "play" and "developer" buttons which determine which mode is to be played based on which button is selected-->
             <div class="panel-body">
                 <button type="button" class="btn btn btn-warning" id="play-mode" disabled>Play</button>
                 <button type="button" class="btn btn btn-danger" id="dev-mode">Developer</button>
@@ -76,14 +85,17 @@
         </div>
         <!--Green game tools panel-->
         <div class="panel panel-success" id="game-tools-panel">
+            <!--game bar-->
             <div class="panel-heading">
                 <h5>Game</h5>
             </div>
             <div class="panel-body">
+                <!--section under "game" bar containing "start" and "reset" buttons-->
                 <button type="button" class="btn btn-lg btn-success" id="launch">Start</button>
                 <button type="button" class="btn btn btn-default" id="reset">Reset</button>
             </div>
         </div>
+        <!--displays name of authoring group-->
         <div class="credits">
             <p id="author">&#169 Made with &#9829 by A Cup Of Java.</p>
         </div>
@@ -97,46 +109,54 @@
         <table>
             <tr>
                 <td>
+                    <!--Columns 1,2,3,4,5,6,7: leftmost->rightmost-->
                     <div class="columncontainer" id="first">
                         <!--<div class="buttoncontainer">
                             <button type="button" class="btn btn btn-default gamebutton"></button>
                         </div>-->
+                        <!--1-->
                         <div class="column"></div>
                     </div>
                     <div class="columncontainer">
                         <!--<div class="buttoncontainer">
                             <button type="button" class="btn btn btn-default gamebutton"></button>
                         </div>-->
+                        <!--2-->
                         <div class="column"></div>
                     </div>
                     <div class="columncontainer">
                         <!--<div class="buttoncontainer">
                             <button type="button" class="btn btn btn-default gamebutton"></button>
                         </div>-->
+                        <!--3-->
                         <div class="column"></div>
                     </div>
                     <div class="columncontainer">
                         <!--<div class="buttoncontainer">
                             <button type="button" class="btn btn btn-default gamebutton"></button>
                         </div>-->
+                        <!--4-->
                         <div class="column"></div>
                     </div>
                     <div class="columncontainer">
                         <!--<div class="buttoncontainer">
                             <button type="button" class="btn btn btn-default gamebutton"></button>
                         </div>-->
+                        <!--5-->
                         <div class="column"></div>
                     </div>
                     <div class="columncontainer">
                         <!--<div class="buttoncontainer">
                             <button type="button" class="btn btn btn-default gamebutton"></button>
                         </div>-->
+                        <!--6-->
                         <div class="column"></div>
                     </div>
                     <div class="columncontainer">
                         <!--<div class="buttoncontainer">
                             <button type="button" class="btn btn btn-default gamebutton"></button>
                         </div>-->
+                        <!--7-->
                         <div class="column"></div>
                     </div>
                 </td>
