@@ -12,6 +12,11 @@
 .player2 {
     background-color: #e74c3c;
 }
+/*color for game board in dev*/
+.dev-mode-chips {
+    background-color: black;
+    cursor: pointer;
+}
 /*main game title*/
 #game_title {
     text-align: center;
@@ -51,8 +56,6 @@
 .columncontainer {
     display: inline-block;
     position: relative;
-    z-index: 2;
-    cursor: hand;
 }
 /*Inner columns*/
 .column {
@@ -65,25 +68,9 @@
     width: 100px;
 }
 /*for first column offset*/
-#first {
+#c1 {
     margin-left: 90px;
 }
-
-.buttoncontainer#first{
-    margin-left: 200px;
-}
-
-.buttoncontainer {
-    margin-top: 10px;
-    padding-left: 25px;
-    position: relative;
-}
-.gamebutton {
-    background-color: #EDEDED;
-    width: 50px;
-    height: 20px;
-}
-
 /*icons to indicate winner*/
 .player-icons#p1{
     margin-left: 47px;
@@ -131,6 +118,7 @@
     position: absolute;
     left:10px;
     top: 10px;
+/*    z-index: 2;*/
 }
 /*hide alerts by default*/
 .info {
@@ -146,9 +134,18 @@
     background-color: #e74c3c;
     color: #ffffff;
 }
-/*spacing for reset button*/
+/*spacing for buttons*/
+#launch {
+    margin-left: 5px;
+}
 #reset {
-    margin-top: 2px;
+    margin-left: 15px;
+}
+#save {
+    margin-left: 10px;
+}
+#load {
+    margin-left: 20px;
 }
 /*reduce opacity of play mode button by default*/
 #play-mode {
@@ -173,7 +170,7 @@
     top: 10px;
     background-color: #3498db;
     opacity: 0.5;
-    margin-top: 40px;
+    margin-top: 20px;
 }
 .playerCircle.p2 {
     height: 80px;
@@ -184,6 +181,28 @@
     top: 10px;
     background-color: #e74c3c;
     opacity: 0.5;
-    top: 50px;
+    top: 30px;
     left: 845px;
+}
+
+.win-overlay {
+    position: fixed;
+    height: 100px;
+    width: 500px;
+    font-family: "exo 2";
+    font-size: 60px;
+    border-radius: 50px;
+    top: -30%;
+    left: 30%;
+    z-index: 100;
+    background-color: #EDEDED;
+/*    display: none;*/
+    opacity: 0.8;
+    box-shadow: 0.1px 2px;
+}
+
+.blur {
+    -webkit-transition: -webkit-filter 2s;
+    -webkit-filter: blur(6px);
+    filter: blur(2px);
 }

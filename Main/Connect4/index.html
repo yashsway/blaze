@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+   <!--Webpage title-->
     <title>Connect 4</title>
     <!--browser and device optimization-->
     <meta charset="utf-8">
@@ -9,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--Bootstrap link (go back two folders)-->
     <link href="../../Frameworks/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <!--Supplementary stylesheet-->
+    <!--Supplementary stylesheet (cascades over previous)-->
     <link href="supplementary.css" rel="stylesheet">
     <!--Web Fonts-->
     <link href='http://fonts.googleapis.com/css?family=Exo+2:400,800' rel='stylesheet' type='text/css'>
@@ -31,16 +32,22 @@
             <strong>Hey there!</strong> Press Start to begin playing!
         </div>
         <div class="alert alert-warning info" role="alert" id="inProgress">
-            Game in progress. Press reset to stop at any time!
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp; Game in progress. Press reset to stop at any time!
         </div>
-        <div class="alert alert-success info" role="alert" id="player1Win">
+        <div class="alert alert-warning info" role="alert" id="saved">
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp; Game Saved!
+        </div>
+        <div class="alert alert-warning info" role="alert" id="loaded">
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp; Game loaded! Press Start to resume.
+        </div>
+        <!--<div class="alert alert-success info" role="alert" id="player1Win">
             Blue Wins!
         </div>
         <div class="alert alert-success info" role="alert" id="player2Win">
             Red Wins!
-        </div>
+        </div>-->
         <div class="alert alert-danger info" role="alert" id="resetMsg">
-            Game Reset!
+            <span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp; Game Reset!
         </div>
         <div class="alert alert-info info" role="alert" id="draw">
             It's a Draw!
@@ -82,12 +89,17 @@
             <div class="panel-body">
                 <button type="button" class="btn btn-lg btn-success" id="launch">Start</button>
                 <button type="button" class="btn btn btn-default" id="reset">Reset</button>
+                <hr>
+                <button type="button" class="btn btn btn-primary" id="save" disabled>Save</button>
+                <button type="button" class="btn btn btn-primary" id="load" disabled>Load</button>
             </div>
         </div>
         <div class="credits">
             <p id="author">&#169 Made with &#9829 by A Cup Of Java.</p>
         </div>
     </div>
+    <!--Win message overlay-->
+    <div class="label label-default win-overlay">&#9829</div>
     <!--Actual game area-->
     <div class="col-lg-10" id="game-panel">
         <!--<div id="board-guide">
@@ -97,43 +109,43 @@
         <table>
             <tr>
                 <td>
-                    <div class="columncontainer" id="first">
+                    <div class="columncontainer" id=c1>
                         <!--<div class="buttoncontainer">
                             <button type="button" class="btn btn btn-default gamebutton"></button>
                         </div>-->
                         <div class="column"></div>
                     </div>
-                    <div class="columncontainer">
+                    <div class="columncontainer" id=c2>
                         <!--<div class="buttoncontainer">
                             <button type="button" class="btn btn btn-default gamebutton"></button>
                         </div>-->
                         <div class="column"></div>
                     </div>
-                    <div class="columncontainer">
+                    <div class="columncontainer" id=c3>
                         <!--<div class="buttoncontainer">
                             <button type="button" class="btn btn btn-default gamebutton"></button>
                         </div>-->
                         <div class="column"></div>
                     </div>
-                    <div class="columncontainer">
+                    <div class="columncontainer" id=c4>
                         <!--<div class="buttoncontainer">
                             <button type="button" class="btn btn btn-default gamebutton"></button>
                         </div>-->
                         <div class="column"></div>
                     </div>
-                    <div class="columncontainer">
+                    <div class="columncontainer" id=c5>
                         <!--<div class="buttoncontainer">
                             <button type="button" class="btn btn btn-default gamebutton"></button>
                         </div>-->
                         <div class="column"></div>
                     </div>
-                    <div class="columncontainer">
+                    <div class="columncontainer" id=c6>
                         <!--<div class="buttoncontainer">
                             <button type="button" class="btn btn btn-default gamebutton"></button>
                         </div>-->
                         <div class="column"></div>
                     </div>
-                    <div class="columncontainer">
+                    <div class="columncontainer" id=c7>
                         <!--<div class="buttoncontainer">
                             <button type="button" class="btn btn btn-default gamebutton"></button>
                         </div>-->
