@@ -39,7 +39,7 @@
 }
 /*spacing for developer mode button*/
 #dev-mode {
-    margin-top: 2px;
+    margin-left: 10px;
 }
 #board-guide {
     margin-left: 200px;
@@ -56,6 +56,7 @@
 .columncontainer {
     display: inline-block;
     position: relative;
+    cursor: pointer;
 }
 /*Inner columns*/
 .column {
@@ -95,19 +96,28 @@
 /*mode icon stuff*/
 .mode-icon#dev-mode-icon{
     display: none;
+    margin: auto;
+    margin-left: 50px;
+    margin-top: -60px;
 }
 .mode-icon#play-mode-icon {
     margin: auto;
     margin-left: 50px;
     margin-top: -60px;
 }
-.mode-icon#dev-mode-icon {
-    margin: auto;
-    margin-left: 50px;
-    margin-top: -60px;
-}
 #mode-panel > .panel-heading {
     height: 50px;
+}
+/* vs mode icon stuff */
+.vs-icon#vs-buddy-icon {
+    display: none;
+    margin-left: 140px;
+    margin-top: -100px;
+}
+.vs-icon#vs-AI-icon {
+    display: none;
+    margin-left: 140px;
+    margin-top: -100px;
 }
 /*properties for each token (80x80px)*/
 .chip {
@@ -123,6 +133,19 @@
 /*hide alerts by default*/
 .info {
     display: none;
+    opacity: 0.8;
+    position: absolute;
+    left: 37%;
+    top: 3%;
+    width: 400px;
+    height: auto;
+    z-index: 100;
+    font-size: 20px;
+    text-align: center;
+}
+/* Keep the load message on top of the reset message that gets called with it */
+.info#loaded {
+    z-index: 200;
 }
 /*player1Win alert modifier*/
 #player1Win {
@@ -139,7 +162,12 @@
     margin-left: 5px;
 }
 #reset {
-    margin-left: 15px;
+    margin-left: 12px;
+}
+.save-load-selection {
+    margin-top: 10px;
+    padding-top: 10px;
+    box-shadow: 0px -0.5px #cdcdcd;
 }
 #save {
     margin-left: 10px;
@@ -151,10 +179,10 @@
 #play-mode {
     opacity: 0.25;
 }
-
-#draw {
+/* Draw message */
+.draw {
+    color: #000;
     background-color: #EDEDED;
-    border-color: #724EB1;
 }
 /*player chip selection objects*/
 .playerCircle {
@@ -184,7 +212,7 @@
     top: 30px;
     left: 845px;
 }
-
+/* Win/Draw message */
 .win-overlay {
     position: fixed;
     height: 100px;
@@ -193,16 +221,66 @@
     font-size: 60px;
     border-radius: 50px;
     top: -30%;
-    left: 30%;
+    left: 32.5%;
     z-index: 100;
     background-color: #EDEDED;
 /*    display: none;*/
     opacity: 0.8;
     box-shadow: 0.1px 2px;
 }
-
+/* Blur out for post-win/draw scenario */
 .blur {
     -webkit-transition: -webkit-filter 2s;
     -webkit-filter: blur(6px);
     filter: blur(2px);
+}
+/* Versus selection pane */
+.vs-selection {
+    margin-top: 10px;
+    padding-top: 10px;
+    box-shadow: 0px -0.5px #cdcdcd;
+}
+/* Animate.css customization */
+.animated {
+    -webkit-animation-duration: 2s;
+    animation-duration: 2s;
+}
+.animated.infinite {
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}
+@-webkit-keyframes flash {
+    50% {
+        background-color: #724EB1;
+        box-shadow: 0px 0px 10px #724EB1;
+        color: white;
+    }
+    0%, 100% {
+        background-color: #fff;
+        color: black;
+        box-shadow: none;
+    }
+}
+@keyframes flash {
+    50% {
+        background-color: #724EB1;
+        color: white;
+        box-shadow: 0px 0px 10px #724EB1;
+    }
+    0%, 100% {
+        background-color: #fff;
+        color: black;
+        box-shadow: none;
+    }
+}
+.flash {
+  -webkit-animation-name: flash;
+  animation-name: flash;
+}
+/* ignore this stuff.... it's for the console (testing purpose display) */
+.console {
+    position: absolute;
+    top: 20px;
+    left: 850px;
+    display: none;
 }

@@ -10,6 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--Bootstrap link (go back two folders)-->
     <link href="../../Frameworks/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!--Animate.css-->
+    <link href="../../Frameworks/animate.css" rel="stylesheet">
     <!--Supplementary stylesheet (cascades over previous)-->
     <link href="supplementary.css" rel="stylesheet">
     <!--Web Fonts-->
@@ -25,45 +27,40 @@
     <script src="https://code.createjs.com/createjs-2014.12.12.min.js"></script>
     <!--Run the script for the game functions-->
     <script src="script.js"></script>
+    <!--Messages/Alerts-->
+    <div class="alert alert-info info" role="alert" id="welcome">
+        <strong>Hey!</strong> Pick a mode and press start to play!
+    </div>
+    <div class="alert alert-warning info" role="alert" id="inProgress">
+        <span class="glyphicon glyphicon-info-sign"></span>&nbsp; Game in progress. Press reset to stop at any time!
+    </div>
+    <div class="alert alert-warning info" role="alert" id="saved">
+        <span class="glyphicon glyphicon-info-sign"></span>&nbsp; Game Saved!
+    </div>
+    <div class="alert alert-danger info" role="alert" id="resetMsg">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp; Game Reset!
+    </div>
+    <div class="alert alert-warning info" role="alert" id="loaded">
+        <span class="glyphicon glyphicon-info-sign"></span>&nbsp; Game loaded! Press Start to resume.
+    </div>
+    <!--<div class="alert alert-info info" role="alert" id="draw">
+        It's a Draw!
+    </div>-->
     <!--Sidebar-->
     <div class="col-md-2" id="info-panel">
-        <div class=".chip"></div>
-        <div class="alert alert-info info" role="alert" id="welcome">
-            <strong>Hey there!</strong> Press Start to begin playing!
-        </div>
-        <div class="alert alert-warning info" role="alert" id="inProgress">
-            <span class="glyphicon glyphicon-info-sign"></span>&nbsp; Game in progress. Press reset to stop at any time!
-        </div>
-        <div class="alert alert-warning info" role="alert" id="saved">
-            <span class="glyphicon glyphicon-info-sign"></span>&nbsp; Game Saved!
-        </div>
-        <div class="alert alert-warning info" role="alert" id="loaded">
-            <span class="glyphicon glyphicon-info-sign"></span>&nbsp; Game loaded! Press Start to resume.
-        </div>
-        <!--<div class="alert alert-success info" role="alert" id="player1Win">
-            Blue Wins!
-        </div>
-        <div class="alert alert-success info" role="alert" id="player2Win">
-            Red Wins!
-        </div>-->
-        <div class="alert alert-danger info" role="alert" id="resetMsg">
-            <span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp; Game Reset!
-        </div>
-        <div class="alert alert-info info" role="alert" id="draw">
-            It's a Draw!
-        </div>
-        <h1 id=game_title>Connect 4</h1>
+<!--        <div class=".chip"></div>-->
+        <h1 id="game_title">Connect 4</h1>
         <!--Grey player list-->
         <div class="panel panel-default" id="player-panel">
             <div class="panel-heading">
                 <h5>Players</h5>
             </div>
             <div class="panel-body">
-                <p class=p1>Bubblegum
+                <p class="p1"><span class="player1Tag">Bubblegum</span>
                     <img src="blue-play.png" title="Crown" width="32" class="player-icons play" id=p1>
                     <img src="crown-blue.png" title="Crown" width="32" class="player-icons win" id=p1>
                 </p>
-                <p class=p2>Salmon
+                <p class="p2"><span class="player2Tag">Salmon</span>
                     <img src="red-play.png" title="Crown" width="32" class="player-icons play" id=p2>
                     <img src="crown-red.png" title="Crown" width="32" class="player-icons win" id=p2>
                 </p>
@@ -74,12 +71,18 @@
             <div class="panel-heading">
                 <h5>Mode</h5>
                 <img src="play-mode.png" title="Play" width="32" class="mode-icon" id="play-mode-icon">
-                <img src="dev-mode.png" title="Play" width="32" class="mode-icon" id="dev-mode-icon">
+                <img src="dev-mode.png" title="Dev" width="32" class="mode-icon" id="dev-mode-icon">
+                <img src="ic_people_64.png" title="vsBuddy" width="32" class="vs-icon" id="vs-buddy-icon">
+                <img src="ic_laptop_mac_64.png" title="vsBuddy" width="32" class="vs-icon" id="vs-AI-icon">
             </div>
             <div class="panel-body">
                 <button type="button" class="btn btn btn-warning" id="play-mode" disabled>Play</button>
                 <button type="button" class="btn btn btn-danger" id="dev-mode">Developer</button>
-            </div>
+                <div class="vs-selection">
+                    <button type="button" class="btn btn btn-default animated infinite flash" id="vs-buddy">vs. Buddy</button>
+                    <button type="button" class="btn btn btn-default animated infinite flash" id="vs-ai">vs. AI</button>
+                </div>
+             </div>
         </div>
         <!--Green game tools panel-->
         <div class="panel panel-success" id="game-tools-panel">
@@ -89,16 +92,17 @@
             <div class="panel-body">
                 <button type="button" class="btn btn-lg btn-success" id="launch">Start</button>
                 <button type="button" class="btn btn btn-default" id="reset">Reset</button>
-                <hr>
-                <button type="button" class="btn btn btn-primary" id="save" disabled>Save</button>
-                <button type="button" class="btn btn btn-primary" id="load" disabled>Load</button>
+                <div class="save-load-selection">
+                    <button type="button" class="btn btn btn-primary" id="save" disabled>Save</button>
+                    <button type="button" class="btn btn btn-primary" id="load" disabled>Load</button>
+                </div>
             </div>
         </div>
         <div class="credits">
             <p id="author">&#169 Made with &#9829 by A Cup Of Java.</p>
         </div>
     </div>
-    <!--Win message overlay-->
+    <!--Win/Draw message overlay-->
     <div class="label label-default win-overlay">&#9829</div>
     <!--Actual game area-->
     <div class="col-lg-10" id="game-panel">
@@ -156,6 +160,17 @@
         </table>
         <div class="playerCircle p2 dev-mode"></div>
         <canvas id="game-canvas" width="724" height="600"></canvas>
+        <div class="console">
+            <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
     </div>
 </body>
 
