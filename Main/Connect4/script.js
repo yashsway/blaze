@@ -10,15 +10,15 @@ var redChips = 21;
 var blueChips = 21; //42 in total. (7x6 grid)
 var currentPlayer = Math.round((Math.random()));
 var mode = "play";
-//TODO: Ai mode stuff (assign one of the two players to be controlled by AI)
+//Assign the AI to a random player
 var aiPlayer = Math.round((Math.random()));
 aiPlayer = aiPlayer%2;
-var aiStatus = [false,"center"]; //Imminent Win & Priority Side
+var aiStatus = [false,"center"]; //Imminent Win & Priority Side (used for keeping track of AI winning move)
 var aiWinningColumn = 0;
-var playerStatus = [false,"center"]; //Imminent Win & Priority Side
-var aiStance = "neutral";
+var playerStatus = [false,"center"]; //Imminent Win & Priority Side (used for keeping track of Player winning move)
+var aiStance = "neutral"; //The AI has 3 stances: neutral (random moves), block (block player from winning) & win (self-explanatory)
 
-//TEST: console
+//TEST: Console for testing. Ignore.
 function disp(){
     //Set
     for(var i=1;i<=7;i++){
@@ -48,6 +48,7 @@ function hidePlayerPointers() {
 
 //Versus mode front-end handler
 function versusModeController(selectionToggle, buddyToggle, aiToggle) {
+    //Controls the pane which holds both the versus mode buttons
     if (selectionToggle == "on") {
         $(".vs-selection").slideDown("fast");
         $("#vs-buddy").prop('disabled',false);
@@ -57,21 +58,22 @@ function versusModeController(selectionToggle, buddyToggle, aiToggle) {
         $("#vs-buddy").prop('disabled',true);
         $("#vs-ai").prop('disabled',true);
     }
+    //Controls the vs buddy button
     if (buddyToggle == "on") {
+        //Change the versusMode
         versusMode = "buddy";
-        //TEST: log
-        console.log(versusMode);
         //Change the player tags
         $(".player1Tag").text("Bubblegum");
         $(".player2Tag").text("Salmon");
+        //Indicate that the game is now in buddy mode
         $(".vs-icon#vs-buddy-icon").show();
     } else if (buddyToggle == "off") {
         $(".vs-icon#vs-buddy-icon").hide();
     }
+    //Controls the vs AI button
     if (aiToggle == "on") {
+        //Chamge the versusMode
         versusMode = "AI";
-        //TEST: log
-        console.log(versusMode);
         //Change the player tags] depending on which player the computer now controls
         if (aiPlayer==0) {
             $(".player1Tag").text("AI");
@@ -80,10 +82,12 @@ function versusModeController(selectionToggle, buddyToggle, aiToggle) {
             $(".player1Tag").text("Bubblegum");
             $(".player2Tag").text("AI");
         }
+        //Indicate that the game is now in vs-AI mode
         $(".vs-icon#vs-AI-icon").show();
     } else if (aiToggle == "off") {
         $(".vs-icon#vs-AI-icon").hide();
     }
+    //To turn both the versus buttons off
     if (buddyToggle == "off" && aiToggle == "off") {
         versusMode = "none";
     }
@@ -91,11 +95,13 @@ function versusModeController(selectionToggle, buddyToggle, aiToggle) {
 
 //Saving & Loading front-end handler
 function saveAndLoadController(selectionToggle, saveToggle, loadToggle) {
+    //Controls the pane which holds both the load & save buttons
     if (selectionToggle == "on") {
         $(".save-load-selection").slideDown("fast");
     } else if (selectionToggle == "off") {
         $(".save-load-selection").slideUp("fast");
     }
+    //Controls the save button
     if (saveToggle == "on") {
         //Allow the player to save
         $("#save").prop('disabled', false);
@@ -103,6 +109,7 @@ function saveAndLoadController(selectionToggle, saveToggle, loadToggle) {
         //Don't allow the player to save
         $("#save").prop('disabled', true);
     }
+    //Controls the load button
     if (loadToggle == "on") {
         $("#load").prop('disabled', false);
     } else if (loadToggle == "off") {
@@ -114,7 +121,6 @@ function saveAndLoadController(selectionToggle, saveToggle, loadToggle) {
 function messageConsole(selector) {
     $(selector).show();
     $(selector).addClass("animated bounceInDown").delay(5000).slideUp();
-    //$(selector).delay(5000).slideUp("slow");
 }
 
 //Updates the current player arrow icons based on player turn
@@ -137,12 +143,8 @@ var checkForDraw = function () {
     //And check if all the columns are NOT full
         if (columns[i].length < 6)
             return;
-        //If they are full...display a draw message
-        //messageConsole("#draw");
-        //TEST: Draw message
-    $(".win-overlay").addClass("draw").text("Draw!").show().animate({
-        top: 40 + "%"
-    }, 800);
+    //If they are full...display a draw message
+    $(".win-overlay").addClass("draw").text("Draw!").show().animate({top: 40 + "%"}, 800);
     //Hide player pointers..
     hidePlayerPointers();
     //and stop the game
@@ -168,20 +170,28 @@ function winner(type, x, y) {
         for (var j = 1;; j++)
             if (locate(type, x + j * direct[i][0], y + j * direct[i][1])){
                 matches++;
-                //TODO: AI mode stuff
+                //When in AI mode
                 if(versusMode=="AI"){
+                    //If there are a series of chips in directions EAST, NE & SE
                     if((i==0) | (i==1) | (i==3)){
+                        //Depending on AI or player...
                         if(type!=aiPlayer){
+                            //"Player is going to win if he goes in immediate left column"
                             playerStatus[1] = "left";
                         }else{
                             aiStatus[1] = "left";
+                            //Record the column where the AI has to move for it to win
                             aiWinningColumn = (x + j * direct[i][0])-1;
                         }
+                    //If there are a series of chips in direction N
                     }else if(i==2){
+                        //Depending on AI or player...
                         if(type!=aiPlayer){
+                            //"Player is going to win if he goes in the current column"
                             playerStatus[1] = "center";
                         }else{
                             aiStatus[1] = "center";
+                            //Record the column where the AI has to move for it to win
                             aiWinningColumn = x;
                         }
                     }
@@ -193,10 +203,12 @@ function winner(type, x, y) {
         for (var j = 1;; j++)
             if (locate(type, x - j * direct[i][0], y - j * direct[i][1])){
                 matches++;
-                //TODO: AI mode stuff
+                //When in AI mode
                 if(versusMode=="AI"){
+                    //If there are a series of chips in directions EAST, NE & SE
                     if((i==0) | (i==1) | (i==3)){
                         if(type!=aiPlayer){
+                            //"Player is going to win if he goes in the immediate right column". (Refer above for explanation of the below if.else segements)
                             playerStatus[1] = "right";
                         }else{
                             aiStatus[1] = "right";
@@ -214,23 +226,24 @@ function winner(type, x, y) {
             }else{
                 break;
             }
-        //TODO: AI mode stuff
+        //If in AI mode
         if(versusMode=="AI"){
+            //This is an important if statement. Determines when the AI recognizes that a block needs to be made or that it can win.
+            //In the current case, if there are more than 2 in a row for the player or the AI itself, it registers an "imminent" win and acts according to aiStance.
             if(matches >= 1){
                 if(type!=aiPlayer){
-                    //TEST: log
-                    console.log("IMMINENT WIN FOR PLAYER. DIRECTION: " + playerStatus[1] + " COLUMN: " + x);
+                    //Player is about to win.
                     playerStatus[0] = true;
+                    //Change AI's stance to block
                     aiStance = "block";
-                    console.log("AI STANCE CHANGED to " + aiStance);
                 }else{
-                    //TEST: log
-                    console.log("IMMINENT WIN FOR AI. DIRECTION: " + aiStatus[1] + " COLUMN: " + x);
+                    //AI is about to win
                     aiStatus[0] = true;
+                    //Change AI's stance to win
                     aiStance = "win";
-                    console.log("AI STANCE CHANGED to " + aiStance);
                 }
             }else{
+                //If 2 in a row are not found for either
                 if(type!=aiPlayer){
                     playerStatus[0] = false;
                     playerStatus[1] = "center";
@@ -239,16 +252,16 @@ function winner(type, x, y) {
                     aiStatus[1] = "center";
                     aiWinningColumn = x;
                 }
-                //TEST: Primary Stance
+                //The default stance is block
                 aiStance = "block";
             }
         }
+        //If more than 3 in a row are found for either player, someone has won. Return true.
         if (matches >= 3) return true;
         matches = 0;
     }
     return false;
 };
-//TODO: Helper function for
 //Play and Developer Mode button toggle + dev-mode player selector animations + player selector
 $(document).ready(function () {
     $("#play-mode").bind("click", function () {
@@ -281,7 +294,7 @@ $(document).ready(function () {
         $("#play-mode").prop('disabled', false);
         versusModeController("off", "off", "off");
     });
-    //TODO: Versus mode controller
+    //Versus mode buttons/pane controller
     $('#vs-buddy').bind("click", function () {
         versusModeController("off", "on", "off");
     });
@@ -300,7 +313,6 @@ $(document).ready(function () {
         $(this).fadeTo("slow", 0.5);
     });
 });
-
 //Main Controller
 $(document).ready(function init() {
     //Hide player pointers
@@ -315,16 +327,12 @@ $(document).ready(function init() {
     $("#launch").click(function () {
         //If you're in PLAY mode...
         if (mode == "play" && (versusMode == "buddy" || versusMode == "AI")) {
-            //TEST: not supposed to be here (move to draw-message)
-            //$(".win-overlay").addClass("draw").text("Draw!").show().animate({top:40+"%"},800);
             updateCurrentPlayer();
             //Disable the start button
             $("#launch").prop('disabled', true);
             //Disable switching to the dev mode
             $("#dev-mode").prop('disabled', true);
             //Allow the player to save
-            //$("#save").prop('disabled',false);
-            //TEST: save-load
             saveAndLoadController("on", "on", "off");
             //Re-enable AI Mode
             if(!($("#vs-ai").hasClass("animated"))){
@@ -335,17 +343,15 @@ $(document).ready(function init() {
             launch = true;
             //Display a message
             messageConsole("#inProgress");
-            //TODO: ai mode stuff (if the AI is the first player, make a neutral move)
+            //If the AI is the first player, make a neutral move
             if(versusMode=="AI"){
                 aiStance = "neutral";
-                //TEST: log
-                //console.log("Current: " + currentPlayer + "/AI IS: " + aiPlayer);
                 if(currentPlayer==aiPlayer){
+                    //Ask the AI to make a neutral move (random play)
                     ai("play",aiStance);
                 }
             }
-            aiStance="block"; //PRIMARY stance
-            //console.log("AI STANCE CHANGED to " + aiStance);
+            aiStance="block"; //Change the stance to the primary block stance after the first move
         //Else, if you're in DEV mode...
         } else if (mode == "dev") {
             //TODO: Launching dev mode
@@ -357,7 +363,6 @@ $(document).ready(function init() {
         }
     });
 });
-
 //Updates the game after every chip play. Also handles win scenario.
 var updateGame = function (index) {
     //Calculate how many empty spaces are available in this column
@@ -366,18 +371,20 @@ var updateGame = function (index) {
     if (colLength >= 6) return false;
     //Else...Push the chip type into the respective column array (0=blue, 1=red)
     var type = currentPlayer % 2;
-    //TODO: Following 2 if statements are NEW
+    //Depending on the versus mode...
     if(versusMode=="buddy"){
+        //Push the player # directly into the columns array. (0=blue,1=red)
         columns[index].push(type);
     }
     if(versusMode=="AI"){
         if(type==aiPlayer){
+            //Push the AI's player # into the columns array. (our mainframe that holds the game board.... "backend")
             columns[index].push(aiPlayer);
-            //TODO: Recording the AI's move (MOVED BELOW WINNER CHECK)
+            //Record the AI's move
             ai("record","AI",index);
         }else{
             columns[index].push(type);
-            //TODO: Recoding the player's move (MOVED BELOW WINNER CHECK)
+            //Record the player's move
             ai("record","player",index);
         }
     }
@@ -388,25 +395,21 @@ var updateGame = function (index) {
         //If the winner function returned true, one of the players has won. Display the win assets.
         //If blue won...
         if (type == 0) {
-            //Display an informative message
-            //messageConsole("#player1Win");
             //Show a visual indicator
             $(".player-icons.win#p1").show();
             //Hide the player pointers
             hidePlayerPointers();
-            //TEST: Win message
+            //Win message
             $(".win-overlay").addClass("p1").text("Blue wins!").show().animate({
                 top: 40 + "%"
             }, 800);
             //If red won...
         } else if (type == 1) {
-            //Display an informative message
-            //messageConsole("#player2Win");
             //Show a visual indicator
             $(".player-icons.win#p2").show();
             //Hide the player pointers
             hidePlayerPointers();
-            //TEST: Win message
+            //Win message
             $(".win-overlay").addClass("p2").text("Red wins!").show().animate({
                 top: 40 + "%"
             }, 800);
@@ -414,8 +417,6 @@ var updateGame = function (index) {
         //Game not in play anymore.
         launch = false;
         //Disable saving
-        //$("#save").prop('disabled',true);
-        //TEST: save-load
         saveAndLoadController("-", "off", "-");
         //TEST: Blur out (causes lag. temporarily disabled)
         //$("#game-panel").addClass("blur");
@@ -425,11 +426,10 @@ var updateGame = function (index) {
         checkForDraw();
     return true;
 };
-
 //The following function adds chips to a clicked column (PLAY Mode)(vs. Buddy)
 $(document).ready(function chipPlacer() {
     $(".columncontainer").click(function () {
-        //TEST: Prevent the player from placing a chip on the AI's turn
+        //Prevent the player from placing a chip on the AI's turn
         if(versusMode=="AI"){
             if((currentPlayer%2)==aiPlayer){
                 return;
@@ -460,17 +460,16 @@ $(document).ready(function chipPlacer() {
         if (!launch) return;
         //Update the current player pointers
         updateCurrentPlayer();
-        //TODO: AI's move
+        //The AI can now make it's move
         if(versusMode=="AI"){
-            //TEST: indicate to the player that they cannot place a chip till the AI finishes it's turn
+            //Indicate to the player that they cannot place a chip till the AI finishes it's turn (by changing the cursor)
             $(".columncontainer").css("cursor","wait");
-            //2 sec delay
+            //Make the move after a slight delay. (Needed... or else the AI will go instantly....yea computer's are fast)
             setTimeout(function() { ai("play",aiStance,-1)},1500);
         }
     });
 });
-
-//TODO: AI Mode helper function
+//AI mode helper function (Inserts a priority number into a specified column. Uses recursions to find the right spot.)
 function priorityGenerator(columnIndex,number){
     //Prevent from placing beyond grid width
     if(columnIndex<0){
@@ -485,14 +484,15 @@ function priorityGenerator(columnIndex,number){
     //Prevent from placing beyond grid height
     if(colLength<6){
         var priorityNumber = number;
-        //TODO: Absorption during ACTUAL placement
-        //console.log(aiBoard[columnIndex][colLength-1]); //TEST: log
+        //Absorb the the priority number below if any (i.e. Add the number below to the one about to be added and THEN insert it)
         if((typeof aiBoard[columnIndex][colLength-1]) == (typeof 0)){
             var target = aiBoard[columnIndex].pop();
-            priorityNumber = target + 1;
+            priorityNumber = target + number;
         }
+        //Absorbed. Now push the priority number into the AI board
         aiBoard[columnIndex].push(priorityNumber);
     }else{
+        //If beyond grid height.... the AI will make a random choice on where to place (left or right) the priority number that has to be placed in the current column.
         var choice = Math.floor((Math.random()*2)+1);
         //Recursion
         if(choice==1){
@@ -504,8 +504,7 @@ function priorityGenerator(columnIndex,number){
         }
     }
 }
-//TODO: AI Mode
-//Versus AI implementation (Play Mode)(vs.AI)
+//Versus AI implementation (Play Mode)(vs.AI) (MAIN AI FUNCTION)
 function ai(aiMode,aiStance,columnIndex){
     var p = aiPlayer ? "player2" : "player1";
     if(aiMode=="play"){
@@ -513,14 +512,16 @@ function ai(aiMode,aiStance,columnIndex){
             var valid = false;
             //Prevent the AI from going beyond the column height
             while(!valid){
-                var playCol = Math.floor((Math.random()*7)+1); //MAIN THEME. Determines which column to play in. (random # b/w 1 and 7)
+                var playCol = Math.floor((Math.random()*7)+1); //Determines which column to play in. (random # b/w 1 and 7)
                 if(updateGame(playCol-1)) valid=true;
             }
         }else if(aiStance=="block"){
-            //TODO: Block stance
+            //Block stance
             var biggestPriority = 0;
             var biggestHeight = 0;
             var playCol;
+            //Summary of following: Finds the biggest priority number and makes the AI's move there.
+            //BUT, it chooses based on the biggest priority number AND how high it is in the board. (e.g. a 4 on the 3nd row from bottom > a 4 on the 2nd row from bottom)
             for(var i=0;i<7;i++){
                 if((typeof aiBoard[i][aiBoard[i].length-1]) == (typeof 0)){
                     if(biggestPriority<aiBoard[i][aiBoard[i].length-1]){
@@ -538,12 +539,12 @@ function ai(aiMode,aiStance,columnIndex){
                     }
                 }
             }
-            //TEST: log
-            //console.log("BIGGEST PRIORITY: " + biggestPriority + ", BIGGEST HEIGHT: " + biggestHeight + ", PLAY COLUMN: " + playCol);
+            //Now we have the column where the chip has to be placed. Send it to the updateGame function that updates the ACTUAL game board & checks for win status etc
             updateGame(playCol-1);
         }else if(aiStance=="win"){
-            //TODO: Win stance
+            //Win stance
             var lowestPriority = 0;
+            //Summary of following: Looks for the LOWEST priority number. (It will basically look for the smallest negative #. reason will become clear by the end of this function) Height does not matter this time.
             for(var i=0;i<7;i++){
                 if((typeof aiBoard[i][aiBoard[i].length-1]) == (typeof 0)){
                     if(lowestPriority>aiBoard[i][aiBoard[i].length-1]){
@@ -552,8 +553,10 @@ function ai(aiMode,aiStance,columnIndex){
                     }
                 }
             }
+            //Now we have the column where the chip has to be placed. Send it to the updateGame function that updates the ACTUAL game board & checks for win status etc
             updateGame(playCol-1);
         }
+        //Following happens REGARDLESS of the three stances. (Visual display of chip falling into the correct slot)
         //Make a new chip object
         var newChip = "<div class=\"chip " + p + "\"></div>";
         //Add the chip object to a random column
@@ -567,17 +570,19 @@ function ai(aiMode,aiStance,columnIndex){
         if (!launch) return;
         //Update the current player pointers
         updateCurrentPlayer();
-        //TEST: Return placing freedom to the player
+        //Indicate to the player that it is now their turn and they can place chips. (by changing cursor type)
         $(".columncontainer").css("cursor","pointer");
     }else if(aiMode=="record"){
+        //If we are trying to record the player's move...
         if(aiStance=="player"){
-            //TODO: Absorption during placement
+            //Absorption during placement (absorption described above in priorityGenerator function)
             if((typeof aiBoard[columnIndex][aiBoard[columnIndex].length-1]) == (typeof 0)){
                 var target = aiBoard[columnIndex].pop();
+                //X refers to a player's move/chip
                 aiBoard[columnIndex].push("X");
-                //TODO: Call the win determination algorithm
+                //Call the win determination algorithm so 'playerStatus' can be recorded
                 winner((currentPlayer%2),columnIndex,columns[columnIndex].length);
-                //TODO: Determining where to push the replaced priority #
+                //Determining where to push the replaced priority #
                 if(aiBoard[columnIndex].length<6){
                     if(playerStatus[0]==true){
                         if(playerStatus[1]=="left"){
@@ -585,7 +590,7 @@ function ai(aiMode,aiStance,columnIndex){
                         }else if(playerStatus[1]=="right"){
                             priorityGenerator(columnIndex+1,target);
                         }else if(playerStatus[1]=="center"){
-                            //TEST: +1 value is a test
+                            //TEST: +1 value is a test. (higher priority on center if there is an imminent win there. remove if desired... will not affect game much)
                             priorityGenerator(columnIndex,target+1);
                         }
                     }else{
@@ -593,32 +598,31 @@ function ai(aiMode,aiStance,columnIndex){
                     }
                 }
             }else{
+                //If nothing can be absorded, just push the X (X is a player's chip)
                 aiBoard[columnIndex].push("X");
             }
-            //TODO: Priority Generator call
+            //Generate three priority numbers for every player's move/chip
             priorityGenerator(columnIndex-1,1); //Immediate left
-            priorityGenerator(columnIndex,1); //Column of player's recent play
+            priorityGenerator(columnIndex,1); //Column of player's play
             priorityGenerator(columnIndex+1,1); //Immediate right
-            //console.log(aiBoard[columnIndex].length);
-            //TEST: Call the console
+            //TEST: Call the console (For debugging purposes...keep disabled)
             //disp();
+        //If we're recording the AI's move
         }else if(aiStance=="AI"){
-            //TODO: Absorption during placement
+            //Absorption during placement
             if((typeof aiBoard[columnIndex][aiBoard[columnIndex].length-1]) == (typeof 0)){
                 var target = aiBoard[columnIndex].pop();
+                //A refer's to the AI's move/chip
                 aiBoard[columnIndex].push("A");
-                //TODO: Call the win determination algorithm (to determine aiStatus)
+                //Call the win determination algorithm (to determine aiStatus)
                 winner(aiPlayer,columnIndex,columns[columnIndex].length);
-                //TODO: Markers for Win Stance
-                //TEST: log
-                console.log("aiWinningColumn=" + aiWinningColumn);
+                //Markers for Win Stance (marks ONE column where the AI should go to try to win)
                 if(aiBoard[aiWinningColumn].length<6){
                     if(aiStatus[0]==true){
-                        //TEST: log
-                        console.log("Woa AI might win! .. okay... next chip should be placed: " + aiStatus[1] + "which is column " + aiWinningColumn);
-                        //TODO: Absorption
+                        //Absorption
                         if((typeof aiBoard[aiWinningColumn][aiBoard[aiWinningColumn].length-1]) == (typeof 0)){
                             var target = aiBoard[aiWinningColumn].pop();
+                            //Make the priority number a big negative number
                             target += -10;
                             aiBoard[aiWinningColumn].push(target);
                         }
@@ -627,12 +631,11 @@ function ai(aiMode,aiStance,columnIndex){
             }else{
                 aiBoard[columnIndex].push("A");
             }
-            //TEST: Call the console
+            //TEST: Call the console (for debugging purposes...keep disabled)
             //disp();
         }
     }
 };
-
 //The following function programs the reset button to wait for a click event
 $(document).ready(function reset() {
     //Now we program the reset button
@@ -656,31 +659,30 @@ $(document).ready(function reset() {
         //Hide the win assets
         $(".win").hide();
         //Disable ONLY the save and not the load button
-        //$("#save").prop('disabled',true);
-        //TEST: save-load
         saveAndLoadController("-", "off", "-");
         //Display message to user
         messageConsole("#resetMsg");
-        //TEST: Remove blur
+        //Remove blur
         $("#game-panel").removeClass("blur");
-        //TEST: Remove win messages
+        //Remove win messages
         $(".win-overlay").animate({
             top: -30 + "%"
         }, 800).removeClass("p1 p2").text(" ");
-        //TODO: versus mode controller reset
+        //Versus mode controller reset
         versusModeController("on", "off", "off");
-        //TODO: Ai mode asset reset
+        //AI Board reset
         for (var i = 0; i < aiBoard.length; i++) aiBoard[i] = [];
-        //TODO: status reset
+        //Status reset
         playerStatus[0] = false;
         playerStatus[1] = "center";
         aiStatus[0] = false;
         aiStatus[1] = "center";
-        //TEST: log
-        $(".console > ul > *").text("");
+        //Restore the pointer
+        $(".columncontainer").css("cursor","pointer");
+        //TEST: Reset the console (for debugging stuff .. keep disabled)
+        //$(".console > ul > *").text("");
     });
 });
-
 //Following function makes the horizontal lines to make the game board look like a grid in PLAY mode (Uses Easel.js library)
 function horizontalLineMaker() {
     var mod = 0;
@@ -695,7 +697,6 @@ function horizontalLineMaker() {
     //Update the stage with all the lines
     stage.update();
 }
-
 //Saving and loading implementation
 $(document).ready(function () {
     //When the save button is clicked
@@ -703,8 +704,6 @@ $(document).ready(function () {
         //Deep clone the array storing the positions of the chips
         savedColumns = $.extend(true, [], columns);
         //Allow the player to load
-        //$("#load").prop('disabled',false);
-        //TEST: save-load
         saveAndLoadController("-", "-", "on");
         //Display a message
         messageConsole("#saved");
@@ -717,8 +716,6 @@ $(document).ready(function () {
         $("#vs-ai").removeClass("animated");
         $("#vs-ai").prop("disabled",true);
         //Disable itself
-        //$("#load").prop('disabled',true);
-        //TEST: save-load
         saveAndLoadController("off", "-", "off");
         //Display a message
         messageConsole("#loaded");
@@ -756,9 +753,7 @@ $(document).ready(function () {
         }
     });
 });
-
 //FOLLOWING FUNCTIONS ARE ALL RELATED TO DEV MODE & UNDER CONSTRUCTION
-
 //Fills the prexisting columns from PLAY mode with invisible chips
 function devModeInitializer() {
     var col;
